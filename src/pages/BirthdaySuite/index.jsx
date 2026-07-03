@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { KeyRound, Sparkle, Box, Archive } from 'lucide-react'
 import IconChip from '../../components/ui/IconChip'
 import { cn } from '../../lib/utils'
@@ -53,17 +53,14 @@ export default function BirthdaySuite() {
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-        >
-          {ActiveComp && <ActiveComp />}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+      >
+        {ActiveComp && <ActiveComp />}
+      </motion.div>
     </div>
   )
 }

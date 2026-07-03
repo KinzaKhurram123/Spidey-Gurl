@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Gem, PartyPopper } from 'lucide-react'
 import GlassCard from '../components/ui/GlassCard'
@@ -88,6 +88,11 @@ function ProposalPreview({ form, accepted, setAccepted }) {
   const stageRef = useRef(null)
   const [noPos, setNoPos] = useState({ x: 0, y: 0 })
   const [noScale, setNoScale] = useState(1)
+
+  useEffect(() => {
+    setNoPos({ x: 0, y: 0 })
+    setNoScale(1)
+  }, [form.noButtonBehavior])
 
   const randomPos = () => {
     const bounds = stageRef.current?.getBoundingClientRect()

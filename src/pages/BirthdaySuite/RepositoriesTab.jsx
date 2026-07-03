@@ -64,7 +64,7 @@ export default function RepositoriesTab() {
         ))}
       </div>
 
-      <RepoSection repoKey={active} config={config} />
+      <RepoSection key={active} repoKey={active} config={config} />
     </div>
   )
 }
