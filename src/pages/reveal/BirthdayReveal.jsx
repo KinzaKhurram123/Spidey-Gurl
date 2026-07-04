@@ -91,7 +91,11 @@ export default function BirthdayReveal() {
         )}
 
         {step === 'entrance' && (
-          <EntranceStep key="entrance" entrance={data.entrance} onNext={() => setStep('stage')} />
+          <EntranceStep
+            key="entrance"
+            entrance={data.entrance}
+            onNext={() => setStep(data.characterStage?.glbUrl ? 'stage' : 'vault')}
+          />
         )}
 
         {step === 'stage' && (
@@ -146,20 +150,6 @@ function EntranceStep({ entrance, onNext }) {
 }
 
 function StageStep({ glbUrl, onNext }) {
-  if (!glbUrl) {
-    return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <button
-          onClick={onNext}
-          className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white"
-          style={{ backgroundImage: 'linear-gradient(135deg, var(--accent-a), var(--accent-b))' }}
-        >
-          Continue <ArrowRight size={16} />
-        </button>
-      </motion.div>
-    )
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
