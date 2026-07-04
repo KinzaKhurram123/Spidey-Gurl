@@ -14,7 +14,7 @@ export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseCon
 
 const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null
 const db = isFirebaseConfigured
-  ? initializeFirestore(app, { experimentalForceLongPolling: true, useFetchStreams: false })
+  ? initializeFirestore(app, { experimentalForceLongPolling: true, useFetchStreams: false }, 'default')
   : null
 
 const SURPRISES_DOC = (surprise) => doc(db, 'surprises', surprise)
