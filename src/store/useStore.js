@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { publishSurprise } from "../lib/firebase";
 
 const uid = () =>
   Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
@@ -70,6 +71,10 @@ const defaultState = {
   ],
 };
 
+const syncBirthday = (get) => {
+  publishSurprise("birthday", get().birthday).catch(() => {});
+};
+
 export const useStore = create(
   persist(
     (set, get) => ({
@@ -111,29 +116,35 @@ export const useStore = create(
       deleteProject: (id) =>
         set((s) => ({ projects: s.projects.filter((p) => p.id !== id) })),
 
-      updateBirthdayGateway: (patch) =>
+      updateBirthdayGateway: (patch) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
             gateway: { ...s.birthday.gateway, ...patch },
           },
-        })),
-      updateBirthdayEntrance: (patch) =>
+        }));
+        syncBirthday(get);
+      },
+      updateBirthdayEntrance: (patch) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
             entrance: { ...s.birthday.entrance, ...patch },
           },
-        })),
-      updateCharacterStage: (patch) =>
+        }));
+        syncBirthday(get);
+      },
+      updateCharacterStage: (patch) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
             characterStage: { ...s.birthday.characterStage, ...patch },
           },
-        })),
+        }));
+        syncBirthday(get);
+      },
 
-      addRepoItem: (repo, item) =>
+      addRepoItem: (repo, item) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
@@ -145,8 +156,10 @@ export const useStore = create(
               ],
             },
           },
-        })),
-      updateRepoItem: (repo, id, patch) =>
+        }));
+        syncBirthday(get);
+      },
+      updateRepoItem: (repo, id, patch) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
@@ -157,8 +170,10 @@ export const useStore = create(
               ),
             },
           },
-        })),
-      deleteRepoItem: (repo, id) =>
+        }));
+        syncBirthday(get);
+      },
+      deleteRepoItem: (repo, id) => {
         set((s) => ({
           birthday: {
             ...s.birthday,
@@ -169,7 +184,9 @@ export const useStore = create(
               ),
             },
           },
-        })),
+        }));
+        syncBirthday(get);
+      },
 
       updateSorry: (patch) => set((s) => ({ sorry: { ...s.sorry, ...patch } })),
       updateAnniversary: (patch) =>

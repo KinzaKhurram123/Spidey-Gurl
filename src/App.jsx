@@ -11,6 +11,7 @@ import SorryToolkit from './pages/SorryToolkit'
 import AnniversarySuite from './pages/AnniversarySuite'
 import ProposalStage from './pages/ProposalStage'
 import CustomOccasion from './pages/CustomOccasion'
+import BirthdayReveal from './pages/reveal/BirthdayReveal'
 
 export default function App() {
   const isAuthenticated = useStore((s) => s.auth.isAuthenticated)
@@ -36,21 +37,29 @@ export default function App() {
           error: { iconTheme: { primary: '#ff3d68', secondary: '#0b0b1a' } },
         }}
       />
-      {!isAuthenticated ? (
-        <Login />
-      ) : (
-        <Routes>
-          <Route element={<AdminLayout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/birthday" element={<BirthdaySuite />} />
-            <Route path="/sorry" element={<SorryToolkit />} />
-            <Route path="/anniversary" element={<AnniversarySuite />} />
-            <Route path="/proposal" element={<ProposalStage />} />
-            <Route path="/occasion/:id" element={<CustomOccasion />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      )}
+      <Routes>
+        <Route path="/reveal/birthday" element={<BirthdayReveal />} />
+        <Route
+          path="/*"
+          element={
+            !isAuthenticated ? (
+              <Login />
+            ) : (
+              <Routes>
+                <Route element={<AdminLayout />}>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/birthday" element={<BirthdaySuite />} />
+                  <Route path="/sorry" element={<SorryToolkit />} />
+                  <Route path="/anniversary" element={<AnniversarySuite />} />
+                  <Route path="/proposal" element={<ProposalStage />} />
+                  <Route path="/occasion/:id" element={<CustomOccasion />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Route>
+              </Routes>
+            )
+          }
+        />
+      </Routes>
     </>
   )
 }
