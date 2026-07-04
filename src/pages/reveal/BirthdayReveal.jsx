@@ -1,32 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, Sparkle, Heart, Flower2, Box, BookHeart, Mail, ScrollText, ArrowRight } from 'lucide-react'
-import { isFirebaseConfigured, subscribeSurprise } from '../../lib/firebase'
 import { formatDate } from '../../lib/utils'
+import RevealShell, { useSurpriseData, RevealLoading, RevealNotConfigured, RevealNotReady } from './RevealShell'
+import { isFirebaseConfigured } from '../../lib/firebase'
 
 export default function BirthdayReveal() {
-  const [data, setData] = useState(undefined)
+  const data = useSurpriseData('birthday')
   const [step, setStep] = useState('gateway')
   const [passInput, setPassInput] = useState('')
   const [shake, setShake] = useState(false)
 
-  useEffect(() => {
-    if (!isFirebaseConfigured) {
-      setData(null)
-      return
-    }
-    const unsub = subscribeSurprise('birthday', setData, (err) => {
-      console.error('subscribeSurprise error:', err)
-    })
-    return unsub
-  }, [])
-
   if (!isFirebaseConfigured) {
     return (
       <RevealShell>
-        <p className="max-w-sm text-center text-white/60">
-          Ye surprise abhi ready nahi hai. Cloud sync configure nahi hui.
-        </p>
+        <RevealNotConfigured />
       </RevealShell>
     )
   }
@@ -34,7 +22,7 @@ export default function BirthdayReveal() {
   if (data === undefined) {
     return (
       <RevealShell>
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-crimson" />
+        <RevealLoading />
       </RevealShell>
     )
   }
@@ -43,7 +31,7 @@ export default function BirthdayReveal() {
     return (
       <RevealShell>
         <Sparkle className="mb-4 text-gold" size={32} />
-        <p className="max-w-sm text-center text-white/60">Kuch special taiyar ho raha hai... thodi der baad wapas aana.</p>
+        <RevealNotReady />
       </RevealShell>
     )
   }
@@ -113,30 +101,6 @@ export default function BirthdayReveal() {
         {step === 'vault' && <VaultStep key="vault" repositories={data.repositories} />}
       </AnimatePresence>
     </RevealShell>
-  )
-}
-
-function RevealShell({ children }) {
-  return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      <div className="pointer-events-none absolute inset-0">
-        {[...Array(14)].map((_, i) => (
-          <span
-            key={i}
-            className="absolute animate-float-slow rounded-full opacity-20 blur-sm"
-            style={{
-              left: `${(i * 41) % 100}%`,
-              top: `${(i * 57) % 100}%`,
-              width: 6 + (i % 4) * 4,
-              height: 6 + (i % 4) * 4,
-              backgroundImage: i % 2 ? 'linear-gradient(135deg, #ff3d68, #ffb020)' : 'linear-gradient(135deg, #22d3ee, #ff3d68)',
-              animationDelay: `${i * 0.35}s`,
-            }}
-          />
-        ))}
-      </div>
-      <div className="relative z-10 flex w-full flex-col items-center">{children}</div>
-    </div>
   )
 }
 

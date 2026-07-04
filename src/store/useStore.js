@@ -71,9 +71,10 @@ const defaultState = {
   ],
 };
 
-const syncBirthday = (get) => {
-  publishSurprise("birthday", get().birthday).catch(() => {});
+const syncSurprise = (key, get) => {
+  publishSurprise(key, get()[key]).catch(() => {});
 };
+const syncBirthday = (get) => syncSurprise("birthday", get);
 
 export const useStore = create(
   persist(
@@ -188,11 +189,18 @@ export const useStore = create(
         syncBirthday(get);
       },
 
-      updateSorry: (patch) => set((s) => ({ sorry: { ...s.sorry, ...patch } })),
-      updateAnniversary: (patch) =>
-        set((s) => ({ anniversary: { ...s.anniversary, ...patch } })),
-      updateProposal: (patch) =>
-        set((s) => ({ proposal: { ...s.proposal, ...patch } })),
+      updateSorry: (patch) => {
+        set((s) => ({ sorry: { ...s.sorry, ...patch } }));
+        syncSurprise("sorry", get);
+      },
+      updateAnniversary: (patch) => {
+        set((s) => ({ anniversary: { ...s.anniversary, ...patch } }));
+        syncSurprise("anniversary", get);
+      },
+      updateProposal: (patch) => {
+        set((s) => ({ proposal: { ...s.proposal, ...patch } }));
+        syncSurprise("proposal", get);
+      },
 
       addOccasion: (occasion) =>
         set((s) => ({

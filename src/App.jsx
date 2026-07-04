@@ -12,6 +12,9 @@ import AnniversarySuite from './pages/AnniversarySuite'
 import ProposalStage from './pages/ProposalStage'
 import CustomOccasion from './pages/CustomOccasion'
 import BirthdayReveal from './pages/reveal/BirthdayReveal'
+import SorryReveal from './pages/reveal/SorryReveal'
+import AnniversaryReveal from './pages/reveal/AnniversaryReveal'
+import ProposalReveal from './pages/reveal/ProposalReveal'
 
 export default function App() {
   const isAuthenticated = useStore((s) => s.auth.isAuthenticated)
@@ -39,6 +42,9 @@ export default function App() {
       />
       <Routes>
         <Route path="/reveal/birthday" element={<BirthdayReveal />} />
+        <Route path="/reveal/sorry" element={<SorryReveal />} />
+        <Route path="/reveal/anniversary" element={<AnniversaryReveal />} />
+        <Route path="/reveal/proposal" element={<ProposalReveal />} />
         <Route
           path="/*"
           element={

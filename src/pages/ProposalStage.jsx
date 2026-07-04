@@ -4,6 +4,7 @@ import { Gem, PartyPopper } from 'lucide-react'
 import GlassCard from '../components/ui/GlassCard'
 import Button from '../components/ui/Button'
 import IconChip from '../components/ui/IconChip'
+import ShareLinkCard from '../components/ui/ShareLinkCard'
 import { Field, Input, Textarea } from '../components/ui/Field'
 import { useStore } from '../store/useStore'
 import { cn } from '../lib/utils'
@@ -35,6 +36,8 @@ export default function ProposalStage() {
           <p className="mt-1 text-sm text-white/45">Set the stage for the one question that matters.</p>
         </div>
       </div>
+
+      <ShareLinkCard path="/reveal/proposal" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <GlassCard hover={false} className="space-y-5">
